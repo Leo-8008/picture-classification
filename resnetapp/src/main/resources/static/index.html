@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Tierbilderkennung</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 40px;
+      background-color: #fff;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .drop-area {
+      border: 2px dashed #ccc;
+      padding: 30px;
+      border-radius: 10px;
+      color: #666;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .drop-area.dragover {
+      background-color: #e6f7ff;
+      border-color: #3399ff;
+      color: #333;
+    }
+
+    button {
+  margin-top: 40px;
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #0066cc;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+    button:hover {
+      background-color: #004999;
+    }
+
+    #preview {
+  margin-top: 25px;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+    #result {
+      margin-top: 25px;
+      font-size: 1em;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tierbild-Erkennung</h1>
+
+    <form id="upload-form" enctype="multipart/form-data">
+      <label for="image" class="drop-area" id="drop-area">
+        <strong>Bild hierher ziehen</strong> oder klicken, um eines auszuwählen
+        <input type="file" id="image" name="image" accept="image/*" required>
+      </label>
+      <button type="submit">Bild analysieren</button>
+    </form>
+
+    <img id="preview" src="#" alt="Bildvorschau" style="display: none;"/>
+    <div id="result">Noch kein Ergebnis</div>
+  </div>
+
+  <script>
+    const form = document.getElementById("upload-form");
+    const result = document.getElementById("result");
+    const preview = document.getElementById("preview");
+    const dropArea = document.getElementById("drop-area");
+    const fileInput = document.getElementById("image");
+
+    let selectedFile = null;
+
+    dropArea.addEventListener("click", () => fileInput.click());
+
+    dropArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropArea.classList.add("dragover");
+    });
+
+    dropArea.addEventListener("dragleave", () => {
+      dropArea.classList.remove("dragover");
+    });
+
+    dropArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropArea.classList.remove("dragover");
+
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        selectedFile = e.dataTransfer.files[0];
+        showPreview(selectedFile);
+      }
+    });
+
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length) {
+        selectedFile = fileInput.files[0];
+        showPreview(selectedFile);
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!selectedFile) {
+        result.textContent = "Bitte wähle ein Bild aus.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      result.textContent = "Wird analysiert...";
+
+      try {
+        const response = await fetch("/analyze", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error("Analyse fehlgeschlagen");
+        }
+
+        const top3 = await response.json(); 
+
+    
+        result.innerHTML = "<h3>Top 3 Erkennungen:</h3><ul>" +
+          top3.map(item =>
+            `<li>${item.klasse} (${item.confidence}%)</li>`
+          ).join("") + "</ul>";
+      } catch (err) {
+        result.textContent = "Fehler: " + err.message;
+      }
+    });
+
+    function showPreview(file) {
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = "block";
+    }
+  </script>
+</body>
+</html>
