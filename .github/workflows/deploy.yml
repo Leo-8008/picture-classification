@@ -17,9 +17,13 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Build with Maven Wrapper
-      working-directory: ./resnetapp
-      run: ./mvnw -B package --file pom.xml
+        - name: Make mvnw executable
+        run: chmod +x ./resnetapp/mvnw
+      
+      - name: Build with Maven Wrapper
+        working-directory: ./resnetapp
+        run: ./mvnw -B package --file pom.xml
+      
 
     - name: Login to DockerHub
       uses: docker/login-action@v2
