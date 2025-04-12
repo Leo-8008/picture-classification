@@ -1,7 +1,7 @@
 name: Build & Push Docker Image
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: 
 
 jobs:
   build-and-push:
@@ -17,7 +17,8 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Build with Maven
+    - name: Build with Maven Wrapper
+      working-directory: ./resnetapp
       run: ./mvnw -B package --file pom.xml
 
     - name: Login to DockerHub
@@ -28,5 +29,5 @@ jobs:
 
     - name: Build and Push Docker image
       run: |
-        docker build -t bertaleo1/resnetapp:latest .
+        docker build -t bertaleo1/resnetapp:latest ./resnetapp
         docker push bertaleo1/resnetapp:latest
