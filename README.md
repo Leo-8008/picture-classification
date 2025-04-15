@@ -72,7 +72,7 @@ Port-Konfiguration via App Setting: WEBSITES_PORT=8080
 
 GitHub Actions CI/CD
 
-Jeder Push auf main triggert den Workflow deploy.yml:
+Der Workflow triggert:
 
 - Checkout Code
 - Set up Java 21
