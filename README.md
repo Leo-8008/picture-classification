@@ -37,29 +37,7 @@ Im Backend wird das ResNet18-Modell (ImageNet) aus dem Model Zoo geladen und lok
 
 Die App wurde in einem Docker Container verpackt und auf Azure Web App for Containers deployed. Das Docker-Image liegt öffentlich auf DockerHub und wird via GitHub Actions bei jedem Push automatisch aktualisiert.
 
-Projektstruktur:
-
-picture-classification/
-
-├── resnetapp/            
- 
-  ├── Dockerfile
-  ├── src/...
-  └── pom.xml
-
-├── .github/workflows/     
-   └── deploy.yml
-
-└── README.md
-
-Lokaler Start (ohne Docker)
-
-cd resnetapp
-./mvnw spring-boot:run
-
-Dann im Browser: http://localhost:8080
-
-Docker (lokal)
+Lokaler Start (ohne Docker) ist ebenfalls möglich.
 
 docker build -t resnetapp ./resnetapp
 docker run -p 8080:8080 resnetapp
