@@ -42,9 +42,12 @@ Projektstruktur:
 picture-classification/
 
 ├── resnetapp/            
-│   ├── Dockerfile
-│   ├── src/...
-│   └── pom.xml
+│ 
+  ├── Dockerfile
+│
+  ├── src/...
+│
+  └── pom.xml
 
 ├── .github/workflows/     
 │   └── deploy.yml
