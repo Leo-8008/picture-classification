@@ -37,7 +37,7 @@ Im Backend wird das ResNet18-Modell (ImageNet) aus dem Model Zoo geladen und lok
 
 Die App wurde in einem Docker Container verpackt und auf Azure Web App for Containers deployed. Das Docker-Image liegt öffentlich auf DockerHub und wird via GitHub Actions bei jedem Push automatisch aktualisiert.
 
-Projektstruktur
+Projektstruktur:
 
 picture-classification/
 ├── resnetapp/            
@@ -81,5 +81,6 @@ Der Workflow triggert:
 - Docker Build
 - Docker Push nach DockerHub
 
-Workflows liegen unter .github/workflows/deploy.yml.Secrets: DOCKER_USERNAME, DOCKER_PASSWORD im Repository gesetzt.
+Workflows liegen unter .github/workflows/deploy.yml.
+Secrets: DOCKER_USERNAME, DOCKER_PASSWORD im Repository gesetzt.
 
