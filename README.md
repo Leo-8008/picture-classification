@@ -64,5 +64,7 @@ Der Workflow triggert:
 - Docker Push nach DockerHub
 
 Workflows liegen unter .github/workflows/deploy.yml.
-Secrets: DOCKER_USERNAME, DOCKER_PASSWORD im Repository gesetzt.
+Secrets im Repository gesetzt:
+DOCKER_USERNAME
+DOCKER_PASSWORD
 
