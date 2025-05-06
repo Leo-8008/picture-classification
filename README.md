@@ -40,12 +40,15 @@ Die App wurde in einem Docker Container verpackt und auf Azure Web App for Conta
 Projektstruktur:
 
 picture-classification/
+
 ├── resnetapp/            
 │   ├── Dockerfile
 │   ├── src/...
 │   └── pom.xml
+
 ├── .github/workflows/     
 │   └── deploy.yml
+
 └── README.md
 
 Lokaler Start (ohne Docker)
